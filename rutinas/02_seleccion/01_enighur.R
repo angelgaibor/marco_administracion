@@ -5,8 +5,9 @@ library(TeachingSampling)
 
 # Abrimos el último marco
 
-marco <- readRDS(paste0("productos/01_general/",
-                       last(list.files("productos/01_general/", pattern = ".rds"))))
+nombre <- last(list.files("productos/01_general/", pattern = ".rds"))
+
+marco <- readRDS(paste0("productos/01_general/",nombre))
 
 # Fijamos el umbral de corte del tamanio de UPM
 
@@ -45,3 +46,7 @@ marco_01 <- marco |>
 
 names(marco_01)[substr(names(marco_01), 1, 4) == "aux_"] <- gsub("aux", encuesta, 
                                                                  names(marco_01)[substr(names(marco_01), 1, 4) == "aux_"])
+
+saveRDS(marco_01, paste0("productos/01_general/marco_upm_", 
+                         str_pad(1 + as.numeric(substr(nombre, 11, 12)), 2, "left", "0"),
+                         ".rds"))
