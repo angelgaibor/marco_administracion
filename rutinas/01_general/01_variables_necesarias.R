@@ -12,7 +12,7 @@ marco_01 <- marco_upm %>%
   ungroup() %>% 
   mutate(nap = sample(1:10000000, 56239)/10000000,
          domgeo = substr(domest, 1, 2)) |> 
-  select(pro, area, domgeo, domest, estrato, Mi, nap)
+  select(id_upm, pro, area, domgeo, domest, estrato, Mi, nap)
 
 saveRDS(marco_01, "productos/01_general/marco_upm_01.rds")
 
