@@ -35,7 +35,7 @@ n_distinct(marco_02$id_upm) == dim(marco_02)[1]
 saveRDS(marco_02, "productos/01_general/marco_upm_01.rds")
 
 # man_sec_upm_final_dmq <- readRDS("D:/MAG/marco_estratificacion/productos/04_marco/marco.rds")
-man_sec_upm_final_dmq <- readRDS("insumos/01_general/man_sec_upm.rds")
+man_sec_upm_final_dmq <- readRDS("insumos/01_general/man_sec_upm_old.rds")
 
 man_sec_upm_final_corregido <- man_sec_upm_final_dmq |>
   left_join(apoyo |> 
