@@ -18,8 +18,8 @@ zonificar <- function(muestra,l){
   n <- dim(bdd)[1]
   
   li <- rep(list(n),m1)
-  s <- lapply(li, solale,k)
-  sr <- lapply(s, ref,C)
+  sa <- lapply(li, solale,k)
+  sr <- lapply(sa, ref,C)
   o <- sapply(sr,funobj,C)
   m <- min((1:m1)[o==min(o)])
   sr <- sr[[m]]
