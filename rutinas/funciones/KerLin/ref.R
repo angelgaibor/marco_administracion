@@ -11,10 +11,11 @@ ref<-function(s,C){
           r=int(r,C,m[i],m[j])
         }
       }
+     
     }
     w=funobj(r,C)-funobj(t,C)
     t=r
   }
-  print(funobj(t,C))
+  #print(funobj(t,C))
   return(t)
 }

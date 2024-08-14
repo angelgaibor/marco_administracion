@@ -27,7 +27,7 @@ int <- function(s,C,i,j){
     #el intercambio
     aux=which(M==min(M),arr.ind=T)
     l=dim(aux)[1]
-    aux=aux[sample(1:l),]
+    aux=aux[sample(1:l, 1),]
     w=min(M)
     #Si el beneficio es negativo se realiza el intercambio
     if(w<0){
