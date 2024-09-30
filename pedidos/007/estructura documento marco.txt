@@ -1,0 +1,26 @@
+Introducción
+Conglomeración
+	- DPA
+		- Mapa
+	- Algoritmo
+		- Mapa
+		- Flujo
+	- Partición
+		- Mapa
+	- Resultados
+		- Mapa
+Estratificación
+	- Identificar variables en cada una de las dimensiones
+	- Determinar categorías mediante algoritmo CHAID
+	- Categorizar las variables de la base del censo
+	- Calcular los indicadores a nivel de UPM
+	- Aplicar técnicas de estratificación y seleccionar el método
+	- Revisión de la estratificación y agregación de estratos según el número de UPM
+	- Resultados
+		- Ejemplos por dominio de estratificación
+Coordinación de muestras
+	- Andrés
+	- Ejemplo
+		- Mapa ejemplo coordinación positiva y negativa
+Anexos
+	- Detalle de número de UPM por estrato por provincia junto con mapa 
