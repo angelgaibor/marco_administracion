@@ -1,0 +1,90 @@
+---
+title: Reporte de muestras seleccionadas sobre el marco de muestreo de encuestas dirigidas a hogares 2022 (MMM 2022).
+output:
+  pdf_document:
+    toc: no
+    df_print: kable
+    number_sections: yes
+  html_document:
+    number_sections: yes
+    toc: yes
+    theme: bootstrap
+    highlight: tango
+    df_print: kable
+header-includes: \renewcommand{\contentsname}{Contenido}
+---
+---
+subtitle: Dirección de Infraestructura Estadística y Muestreo - Gestión de Diseño Muestral
+author: Javier Núñez
+date: `r Sys.Date()`
+---
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+library(tidyverse)
+
+nombre <- last(list.files("productos/01_general/", pattern = "marco_upm_"))
+
+marco <- readRDS(paste0("productos/01_general/", nombre))
+
+```
+
+# Antecedentes
+El marco de muestreo para encuestas dirigidas a hogares 2022 (MMM 2022) fue construido a partir de la información cartográfica del precenso 2022 más los resultados definitivos del censo de población y vivienda 2022, entrando en aplicación a partir del segundo semestre de 2024.
+
+En este informe se detallan las muestras seleccionadas a la fecha, desagregando su tamaño por provincia y área, su tipo de coordinación, junto con el stock disponible de Unidades Primarias de Muestreo (UPM) por estrato.
+
+**Fecha de reporte sobre el MMM 2022:** `r Sys.Date()`.
+
+# Descripción básica del marco de muestreo de encuestas dirigidas a hogares
+El MMM 2022 está compuesto por 56.239 UPM, distribuidas en 34 dominios de diseño geográfico que incluyen:
+
+* Parte urbana de los cantones Cuenca, Riobamba, Loja, Quito y Ambato.
+* Parte urbana y rural de los cantones Machala, Esmeraldas, Guayaquil, Manta y Santo Domingo.
+* Las 24 provincias del Ecuador.
+
+En la siguiente tabla se muestra la distriución del MMM 2022 por dominio geográfico y área:
+
+```{r echo=F, message=F, warning=F, results='markup'}
+
+marco |> 
+  mutate(area = case_when(area == "1" ~ "Urbano",
+                          area == "2" ~ "Rural",
+                          T ~ "Sin clasificación")) |> 
+  rename(Provincia = pro,
+         Dominio = domgeo) |> 
+  group_by(Provincia, Dominio, area) |> 
+  summarise(n = n()) |> 
+  pivot_wider(names_from = area, values_from = n) |> 
+  ungroup() |> 
+  mutate_all(~ replace_na(., 0))
+
+```
+
+# Muestras seleccionadas hasta la fecha
+Las muestras seleccionadas sobre el MMM 2022 son:
+
+1. Nueva Encuesta de Fuerza de Trabajo (ENCIET) para los meses de noviembre y diciembre de 2024.
+2. Encuesta Nacional de Ingresos y Gastos en Hogares Urbanos y Rurales 2023-2024 (ENIGHUR 2023-2024).
+
+La ENIGHUR 2023-2024 fue seleccionada con coordinación negativa con respecto a la ENCIET, lo que implica que las UPM de las dos encuestas son distintas, a excepción de los estratos donde la disponibilidad es menor a los tamaños muestrales requeridos.
+
+En la siguiente tabla se muestran el tamaño de muestra a nivel de UPM de la ENCIET, ENIGHUR 2023-2024 y el stock disponible de UPM por estrato.
+
+```{r echo=F, message=F, warning=F, results='markup'}
+
+marco  |> 
+  filter(domgeo != "20") |> 
+  rename(Estrato = estrato) |> 
+  group_by(Estrato) |> 
+  summarise(`Nro. UPM` = n(),
+            `ENCIET 2024-11` = sum(enciet_202410_sel),
+            `ENCIET 2024-12` = sum(enciet_202411_sel),
+            ENIGHUR = sum(enighur_sel),
+            `Disponibles (%)` = round((`Nro. UPM` - `ENCIET 2024-11` - `ENCIET 2024-12` - ENIGHUR)/`Nro. UPM`*100, 1)) |> 
+  ungroup() |> 
+  mutate_all(~ replace_na(., 0))
+
+```
+
+
