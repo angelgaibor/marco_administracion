@@ -32,6 +32,10 @@ if(sum(grepl(encuesta, names(marco))) == 0){
     # Creamos la variable dominio de en función del corte
     mutate(aux_estrato = ifelse(Mi < Mi_min, "9999", estrato),
            aux_seleccionable = case_when(enighur_sel == 1 ~ 2,
+                                         enciet_202410_sel == 1 ~ 3,
+                                         enciet_202411_sel == 1 ~ 4,
+                                         enciet_202412_sel == 1 ~ 5,
+                                         enciet_202502_sel == 1 ~ 6,
                                          T ~ 1)) |> 
     # Se agrega la variable de tamanio por estrato
     left_join(tam_estrato, by = "aux_estrato") |> 
