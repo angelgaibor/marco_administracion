@@ -17,7 +17,6 @@ Mi_min <- 40
 encuesta <- "enciet"
 periodo <- "202504"
 
-
 if(sum(grepl(paste0(encuesta,"_",periodo), names(marco))) == 0){
   # Se abre el tamanio por estrato
   
@@ -33,7 +32,8 @@ if(sum(grepl(paste0(encuesta,"_",periodo), names(marco))) == 0){
     #filter(pro != "20") |> 
     # Creamos la variable dominio de en función del corte
     mutate(aux_estrato = ifelse(Mi < Mi_min, "9999", estrato),
-           aux_seleccionable = case_when(enciet_202502_sel == 1 ~ 7,
+           aux_seleccionable = case_when(enciet_202503_sel == 1 ~ 8,
+                                         enciet_202502_sel == 1 ~ 7,
                                          enciet_202412_sel == 1 ~ 6,
                                          enciet_202411_sel == 1 ~ 5,
                                          enciet_202410_sel == 1 ~ 4,
