@@ -17,6 +17,8 @@ Mi_min <- 40
 encuesta <- "enciet"
 periodo <- "202504"
 
+print("Oye programador promedio reloadad (PPR), no te olvides de actualizar el aux_seleccionable")
+
 if(sum(grepl(paste0(encuesta,"_",periodo), names(marco))) == 0){
   # Se abre el tamanio por estrato
   
