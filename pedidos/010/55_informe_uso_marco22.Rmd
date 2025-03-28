@@ -76,6 +76,7 @@ En la siguiente tabla se muestran el tamaño de muestra a nivel de UPM de la ENC
 marco  |> 
   filter(domgeo != "20") |> 
   rename(Estrato = estrato) |> 
+  #mutate(control = rowSums(across(starts_with("enciet") & ends_with("sel"))))
   group_by(Estrato) |> 
   summarise(`Nro. UPM` = n(),
             `ENCIET 2024-11` = sum(enciet_202410_sel),
