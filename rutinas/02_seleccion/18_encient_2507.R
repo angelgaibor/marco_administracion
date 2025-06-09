@@ -84,3 +84,8 @@ table(marco_01$enciet_202411_sel, marco_01$enciet_202507_sel)
 table(marco_01$enighur_sel, marco_01$enciet_202507_sel)
 table(marco_01$endi3_sel, marco_01$enciet_202507_sel)
 
+solapamiento_enighur <- marco_01 %>% 
+  filter(enighur_sel == 1 & enciet_202507_sel) %>% 
+  select(id_upm, pro, area, domgeo, domest, estrato)
+
+saveRDS(solapamiento_enighur, "../ENCIET/intermedios/03_muestra_upm/a25m07/solapamiento_enighur.rds")
