@@ -79,3 +79,8 @@ if(sum(grepl(paste0(encuesta,"_",periodo), names(marco))) == 0){
 }else{
   print("La selección ya fue realizada para la encuesta verificar la versión del marco o el nombre de la encuesta")
 }
+
+table(marco_01$enciet_202411_sel, marco_01$enciet_202507_sel)
+table(marco_01$enighur_sel, marco_01$enciet_202507_sel)
+table(marco_01$endi3_sel, marco_01$enciet_202507_sel)
+
