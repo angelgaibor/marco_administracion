@@ -31,3 +31,5 @@ lol <- rbind(enighur01 |>
                select(-man_sec) |> 
                mutate(cartografia = "precenso 2022"))
 piso_raro <- lol |> filter(piso_n %in% as.character(99:40))
+
+save_marco(".", lol)
