@@ -90,4 +90,18 @@ solapamiento_enighur <- marco_01 %>%
   filter(enighur_sel == 1 & enciet_202508_sel == 1) %>% 
   select(id_upm, pro, area, domgeo, domest, estrato)
 
-saveRDS(solapamiento_enighur, "../ENCIET/intermedios/03_muestra_upm/a25m08/solapamiento_enighur.rds")
+solapamiento <- marco_01 %>% 
+  mutate(id_conglomerado = substr(id_upm, 1, 10)) %>% 
+  group_by(id_conglomerado) %>% 
+  mutate(n_partes = n_distinct(id_upm)) %>% 
+  group_by(id_upm) %>% 
+  summarise(n_partes = mean(n_partes)) %>% 
+  select(id_upm, n_partes) %>% 
+  right_join(solapamiento, by = "id_upm")
+
+saveRDS(solapamiento, "../ENCIET/intermedios/03_muestra_upm/a25m08/solapamiento_enighur.rds")
+
+
+
+
+
