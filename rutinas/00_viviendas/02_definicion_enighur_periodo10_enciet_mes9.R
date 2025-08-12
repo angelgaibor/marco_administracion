@@ -28,7 +28,7 @@ enlistamiento_01 <- enlistamiento |>
   filter(c_ocup %in% c("Ocupada con personas Ausentes", "Ocupada con personas Presentes", "Rechazo")) |> 
   mutate(jefe_hogar = paste(primernjh, segundonjh, primerajh, segudonjh, sep = " ")) |> 
   select(pro, can, par, zon, sec, manloc, n_edif_umce = n_umce, piso_n, 
-         n_viv, n_hbt = tot_hbt, jefe_hogar, calle = n_via_p, 
+         n_viv, n_hbt = tot_hbt, jefe_hogar, calle = n_via_p, n_pm,
          id_upm = upm)
 
 
