@@ -204,9 +204,13 @@ control_upm_revisar <- control_upm |>
 
 # generación marco actualizado enighur
 
+muestra_enciet <- readRDS("insumos/00_viviendas/enciet/muestra_acumulada_marco_viviendas.rds")
+
 seleccion_enighur <- readRDS("insumos/00_viviendas/enighur/marco_enighur_01_10.rds") |> 
   mutate(id_viv_car = paste0(substr(id_viv_car, 1, 18), substr(id_viv_car, 20, 22))) |> 
   filter(substr(id_upm, 1, 10) %in% unique(substr(enlistamiento_01$id_upm, 1, 10)))
+
+set.seed(20250812)
 
 enlistamiento_02 <- enlistamiento_01 |> 
   mutate(n_edif_umce = str_pad(n_edif_umce, 3, "left", "0"),
@@ -218,15 +222,92 @@ enlistamiento_02 <- enlistamiento_01 |>
                             T ~ id_upm4),
          id_viv_car = paste0(id_edif_umce, str_pad(n_viv, 3,"left", "0"))) |> 
   filter(substr(id_upm, 1, 10) %in% unique(substr(seleccion_enighur$id_upm, 1, 10))) |> 
-  left_join(seleccion_enighur |> select(-id_upm), by = "id_viv_car")
-  
+  left_join(seleccion_enighur |> select(-id_upm, -encuesta), by = "id_viv_car") |> 
+  select(-id_edif_umce, -id_upm4) |> 
+  mutate(seleccion = case_when(id_viv_car %in% seleccion_enighur$id_viv_car[seleccion_enighur$n <= 12] ~ 1,
+                               T ~ 0),
+         encuesta = case_when(id_viv_car %in% seleccion_enighur$id_viv_car[seleccion_enighur$n <= 12] ~ "01_enighur",
+                               T ~ "99_libre"),
+         link = pluscodes,
+         nap1 = runif(240173),
+         nap = case_when(is.na(nap) ~ nap1,
+                         T ~ nap),
+         cod_cart = "2") |>
+  select(-n, -nap1) |> 
+  arrange(id_upm, desc(seleccion),nap) %>% 
+  group_by(id_upm) %>% 
+  mutate(n = row_number()) |> 
+  ungroup()
+
+colSums(is.na(enlistamiento_02))
+
+table(enlistamiento_02$n, enlistamiento_02$seleccion)
+
+names(enlistamiento_02)[!names(enlistamiento_02) %in% names(marco_viviendas)]
+names(marco_viviendas)[!names(marco_viviendas) %in% names(enlistamiento_02)]
+
+marco_viviendas_01 <- marco_viviendas |> 
+    mutate(cod_cart = "1",
+           id_viv_car = paste0(pro, can, par, zon, sec, manloc, n_edif_umce, n_viv),
+           seleccion = 0,
+           encuesta = "99_libre") |> 
+  select(-man_sec) |> 
+  select(names(enlistamiento_02)) |> 
+  rbind(enlistamiento_02) |> 
+  left_join(muestra_enciet |> 
+              rename(encuesta_enciet = encuesta), 
+            by = c("id_viv_car", "cod_cart")) |> 
+  mutate(encuesta = case_when(!is.na(encuesta_enciet) ~ "02_enciet",
+                              T ~ encuesta),
+         seleccion = case_when(!is.na(encuesta_enciet) ~ 1,
+                               T ~ seleccion),
+         nap = runif(dim(pick(everything()))[1])) |> 
+  select(-n) |> 
+  arrange(id_upm, encuesta, nap) |> 
+  group_by(id_upm, cod_cart) |> 
+  mutate(orden = row_number()) |> 
+  ungroup() |> 
+  select(-encuesta_enciet)
 
 
+lol <- marco_viviendas_01 |> 
+  group_by(id_upm, cod_cart, encuesta) |> 
+  summarise(m = n(), min = min(orden), max = max(orden), suma = sum(orden), 
+            sumeni = sum(encuesta == "01_enighur"),
+            sumcie = sum(encuesta == "02_enciet", na.rm = T),
+            contol = n_distinct(nap)) |> 
+  group_by(id_upm) |> 
+  mutate(n = n_distinct(encuesta)) |> 
+  ungroup()
 
-lol <- seleccion_enighur |> 
-  filter(!id_viv_car %in% enlistamiento_02$id_viv_car)
+save_marco(paste0("productos/00_viviendas/marco_viviendas_", format(Sys.Date(), "%Y%m%d")), marco_viviendas_01)
+# 
+# muestra_enighur <- muestra_enighur1 %>% 
+#   rbind(muestra_enighur2, muestra_enighur37, muestra_enighur8, muestra_enighur9,
+#         muestra_enighur10) %>% 
+#   mutate(n_aleatorio_orden = ifelse(is.na(n_aleatorio_orden), 99, n_aleatorio_orden)) %>% 
+#   arrange(n_aleatorio_orden, n_aleatorio) %>% 
+#   group_by(id_upm) %>% 
+#   mutate(n_aleatorio_orden = case_when(n_aleatorio_orden == 99 ~ row_number(),
+#                                        T ~ n_aleatorio_orden))
+# 
+# 
+# 
+# 
+# colSums(is.na(enlistamiento_02))
+#   
+# 
 
-lal <- enlis |> 
-  filter(!substr(id_upm, 1, 10) %in% unique(substr(enlistamiento_02$id_upm, 1, 10)))
-
-
+# 
+# marco_viviendas_01 <- marco_viviendas |> 
+#   mutate(cod_cart = 1,
+#          id_viv_car = paste0(pro, can, par, zon, sec, manloc, n_edif_umce, n_viv))
+# 
+# 
+# lol <- seleccion_enighur |> 
+#   filter(!id_viv_car %in% enlistamiento_02$id_viv_car)
+# 
+# lal <- enlistamiento_02 |> 
+#   filter(!substr(id_upm, 1, 10) %in% unique(substr(seleccion_enighur$id_upm, 1, 10)))
+# 
+# 
