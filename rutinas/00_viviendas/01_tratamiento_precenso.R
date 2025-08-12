@@ -14,7 +14,7 @@ precenso01 <- precenso |>
                             T ~ man),
          jefe_hogar = paste(primernjh, segundonjh, primerajh, segudonjh)) |> 
   select(pro, can, par, zon, sec, manloc, n_edif_umce, piso_n, n_viv, n_hbt,
-         jefe_hogar, man_sec, calle, pluscodes,
+         jefe_hogar, man_sec, calle, n_pm, pluscodes,
          link, id_upm, nap, n)
 
 # select(pro, can, par, zon, sec, man, n_edif, loc, n_loc, nom_loc_a, direc, 
