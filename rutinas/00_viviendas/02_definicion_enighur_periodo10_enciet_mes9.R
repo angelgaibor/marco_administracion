@@ -261,7 +261,8 @@ marco_viviendas_01 <- marco_viviendas |>
                               T ~ encuesta),
          seleccion = case_when(!is.na(encuesta_enciet) ~ 1,
                                T ~ seleccion),
-         nap = runif(dim(pick(everything()))[1])) |> 
+         nap = runif(dim(pick(everything()))[1]),
+         n_viv = str_pad(n_viv, 3, "left", "0")) |> 
   select(-n) |> 
   arrange(id_upm, encuesta, nap) |> 
   group_by(id_upm, cod_cart) |> 
@@ -280,7 +281,7 @@ lol <- marco_viviendas_01 |>
   mutate(n = n_distinct(encuesta)) |> 
   ungroup()
 
-save_marco(paste0("productos/00_viviendas/marco_viviendas_", format(Sys.Date(), "%Y%m%d")), marco_viviendas_01)
+save_marco(paste0("productos/00_viviendas/marco_viviendas_", "20250812"), marco_viviendas_01)
 # 
 # muestra_enighur <- muestra_enighur1 %>% 
 #   rbind(muestra_enighur2, muestra_enighur37, muestra_enighur8, muestra_enighur9,
