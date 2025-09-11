@@ -1,4 +1,5 @@
 save_marco <- function(folder, df){
+  library(arrow)
   # Carpeta para guardar los bloques
   dir.create(folder, showWarnings = FALSE)
   
