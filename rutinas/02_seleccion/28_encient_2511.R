@@ -17,7 +17,7 @@ Mi_min <- 40
 
 # Incluir el nombre de la encuesta para las variables
 encuesta <- "enciet"
-periodo <- "202510"
+periodo <- "202511"
 
 marco |> 
   select(ends_with("_sel")) |> 
@@ -42,7 +42,8 @@ if(sum(grepl(paste0(encuesta,"_",periodo), names(marco))) == 0){
     #filter(pro != "20") |> 
     # Creamos la variable dominio de en función del corte
     mutate(aux_estrato = ifelse(Mi < Mi_min, "9999", estrato),
-           aux_seleccionable = case_when(enciet_202509_sel == 1 ~ 15,
+           aux_seleccionable = case_when(enciet_202510_sel == 1 ~ 16,
+                                         enciet_202509_sel == 1 ~ 15,
                                          enciet_202508_sel == 1 ~ 14,
                                          enciet_202507_sel == 1 ~ 13,
                                          enciet_202506_sel == 1 ~ 12,
@@ -91,18 +92,18 @@ if(sum(grepl(paste0(encuesta,"_",periodo), names(marco))) == 0){
   print("La selección ya fue realizada para la encuesta verificar la versión del marco o el nombre de la encuesta")
 }
 
-table(marco_01$enciet_202411_sel, marco_01$enciet_202510_sel)
-table(marco_01$enighur_sel, marco_01$enciet_202510_sel)
-table(marco_01$endi3_sel, marco_01$enciet_202510_sel)
-table(marco_01$steps_202506_sel, marco_01$enciet_202510_sel)
+table(marco_01$enciet_202411_sel, marco_01$enciet_202511_sel)
+table(marco_01$enighur_sel, marco_01$enciet_202511_sel)
+table(marco_01$endi3_sel, marco_01$enciet_202511_sel)
+table(marco_01$steps_202506_sel, marco_01$enciet_202511_sel)
 
 solapamiento_enighur <- marco_01 %>% 
-  filter(enighur_sel == 1 & enciet_202510_sel == 1) %>% 
+  filter(enighur_sel == 1 & enciet_202511_sel == 1) %>% 
   mutate(encuesta = "enighur") |> 
   select(id_upm, pro, area, domgeo, domest, estrato, encuesta)
 
 solapamiento_endi <- marco_01 %>% 
-  filter(endi3_sel == 1 & enciet_202510_sel == 1) %>% 
+  filter(endi3_sel == 1 & enciet_202511_sel == 1) %>% 
   mutate(encuesta = "endi3") |> 
   select(id_upm, pro, area, domgeo, domest, estrato, encuesta)
 
@@ -115,8 +116,8 @@ solapamiento <- marco_01 %>%
   select(id_upm, n_partes) %>% 
   right_join(rbind(solapamiento_enighur, solapamiento_endi), by = "id_upm")
 
-saveRDS(solapamiento, "../ENCIET/intermedios/03_muestra_upm/a25m10/solapamiento_upm.rds")
+saveRDS(solapamiento, "../ENCIET/intermedios/03_muestra_upm/a25m11/solapamiento_upm.rds")
 
-export(solapamiento, "../ENCIET/intermedios/03_muestra_upm/a25m10/solapamiento_upm.xlsx")
+export(solapamiento, "../ENCIET/intermedios/03_muestra_upm/a25m11/solapamiento_upm.xlsx")
 
 
