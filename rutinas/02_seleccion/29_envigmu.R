@@ -57,8 +57,8 @@ if(sum(grepl(paste0(encuesta,"_", periodo), names(marco))) == 0){
                                          enciet_202411_sel == 1 ~ 5,
                                          steps_202506_sel == 1 ~ 4,
                                          endi3_sel == 1 ~ 3,
-                                         enighur_sel == 1 ~ 2,
-                                         T ~ 1)) |> 
+                                         enighur_sel == 1 ~ 1,
+                                         T ~ 2)) |> 
     # Se agrega la variable de tamanio por estrato
     left_join(tam_estrato, by = "aux_estrato") |> 
     # Se corrige el tamaño
@@ -121,5 +121,7 @@ solapamiento <- marco_01 %>%
 saveRDS(solapamiento, "../ENCIET/intermedios/03_muestra_upm/a25m11/solapamiento_upm.rds")
 
 export(solapamiento, "../ENCIET/intermedios/03_muestra_upm/a25m11/solapamiento_upm.xlsx")
+
+
 
 
