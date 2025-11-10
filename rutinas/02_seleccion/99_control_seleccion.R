@@ -6,7 +6,7 @@ nombre <- last(list.files("productos/01_general/", pattern = ".rds"))
 
 marco <- readRDS(paste0("productos/01_general/",nombre))
 
-encuesta <- "enciet_202510"
+encuesta <- "envigmu_piloto"
 
 var <- names(marco)[grepl("_sel" ,names(marco)) & !grepl("_seleccionable" ,names(marco)) & !grepl(encuesta ,names(marco))]
 
