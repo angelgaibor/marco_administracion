@@ -91,15 +91,21 @@ apoyo_grafico_cobertura <- cobertura_enemdu |>
   pivot_longer(cols = c("ENEMDU", "ENCIET"),
                names_to = "Encuesta",
                values_to = "Tasa de no elegibilidad") |> 
-  mutate(Provincia = factor(Provincia, cobertura_enemdu$Provincia, cobertura_enemdu$Provincia)) |> 
+  mutate(Provincia = factor(Provincia, cobertura_enemdu$Provincia, cobertura_enemdu$Provincia),
+         `Tasa de no elegibilidad` = `Tasa de no elegibilidad` - 10) |> 
   ggplot(aes(x = Provincia, y = `Tasa de no elegibilidad`, fill = Encuesta)) +
-  geom_bar(stat = "identity", position = "dodge") +
+  geom_bar(stat = "identity", position = "dodge", color = "white") +
   labs(title = "Tasa de no elegibilidad primera visita ENEMDU versus ENCIET") + 
   coord_flip() + 
+  scale_y_continuous(breaks = c(0, 10, 20 ,30),
+                     labels = c("0" = "10", "10" = "20", "20" = "30" ,"30"="40")) +
   theme_minimal() +
   theme(axis.title = element_blank(),
+        axis.ticks = element_blank(),
         legend.direction = "horizontal",
-        legend.position = "bottom")
+        legend.position = "bottom",
+        panel.background = element_blank(), 
+        panel.grid = element_blank())
 
 
 ggsave(file ="05_comparacion_tne_enemdu_enciet.png",
