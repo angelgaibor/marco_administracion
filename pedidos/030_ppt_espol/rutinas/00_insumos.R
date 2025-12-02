@@ -2,7 +2,17 @@ library(tidyverse)
 
 rm(list = ls())
 
+library(openxlsx)
+
 # selección upm marco anonimizado
+
+# base enighur tamanio
+
+bdd <-read.xlsx("pedidos/030_ppt_espol/insumos/01_tamanio/base0_tamanio_enighur.xlsx") |> 
+  filter(grepl("_p", dominio)) |> 
+  select(provincia = nombre_dom, d1, sd, d1_deff, N, prom_hogares_upm)
+
+write.xlsx(bdd, "pedidos/030_ppt_espol/insumos/01_tamanio/bdd_ej3_enighur.xlsx")
 
 marco <- readRDS("productos/01_general/marco_upm_01.rds")
 
